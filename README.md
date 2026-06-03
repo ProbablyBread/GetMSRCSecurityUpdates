@@ -14,7 +14,7 @@ While this script has only been tested on PowerShell 5.1, it should be able to w
 ## Usage Instructions
 For first time usage, run UpdateProducts.ps1 to begin. This will populate the list within products.txt to be used in the main script. To remove products, delete each line manually from products.txt.
 
-Once the products.txt have been setup, simply run MSRCSecurityUpdates.ps1 to extract the list of security updates for each product in product.txt. 
+Once the products.txt has been setup, run MSRCSecurityUpdates.ps1 to get the list of security updates for each product in product.txt from the MSRC API. 
 
 To specify the month, use the -DateString parameter with the month format in YYYY-MMM (e.g. 2026-May).
 
