@@ -7,7 +7,7 @@ This script comes in two parts:
 2. The product updater - UpdateProducts.ps1
 
 ## Pre-Requisites
-This script requires at least PowerShell 5.1 and the (MsrcSecurityUpdates PowerShell Module)[https://github.com/microsoft/MSRC-Microsoft-Security-Updates-API] from Microsoft to function. 
+This script requires at least PowerShell 5.1 and the [MsrcSecurityUpdates PowerShell Module](https://github.com/microsoft/MSRC-Microsoft-Security-Updates-API) from Microsoft to function. 
 
 While this script has only been tested on PowerShell 5.1, it should be able to work on later versions of PowerShell.
 
