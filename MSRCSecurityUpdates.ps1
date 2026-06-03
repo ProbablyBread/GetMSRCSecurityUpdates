@@ -1,5 +1,6 @@
 param(
-    [string]$DateString = (Get-Date -Format "yyyy-MMM") 
+    [string]$DateString = (Get-Date -Format "yyyy-MMM"),
+    [string]$OutputFile = "" 
 )
 
 $productsFile = "./products.txt"
@@ -138,3 +139,17 @@ Write-Host ("=" * ($documentTitle.Length + 6))
 Write-Host "== $($cvrf.DocumentTitle.Value) =="
 Write-Host ("=" * ($documentTitle.Length + 6))
 $remediations | Sort-Object -Property Product | Format-Table -AutoSize -Wrap 
+
+# output to file
+if ($OutputFile -ne "") {
+    Write-Host "Exporting all security updates to $($OutputFile)..."
+    try {
+        $($remediations | Sort-Object -Property Product | Select-Object Product, LatestVersion, Link, RestartRequired) | Export-Csv -Path "$OutputFile" -Delimiter "," -NoTypeInformation
+        Write-Host "Security updates exported to $($OutputFile)."
+    }
+    catch {
+        Write-Host "ERROR: Failed to export file: $($_.Exception)" -ForegroundColor Red
+        Write-Host "$($_.CategoryInfo)"
+        Write-Host "$($_.FullyQualifiedErrorId)"
+    }
+}
