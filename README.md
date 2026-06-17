@@ -3,7 +3,7 @@
 This PowerShell script extracts the latest security updates available for specified products from the Microsoft Security Response Centre (MSRC) based on a list of products. 
 
 This script comes in two parts: 
-1. The main script - MSRCSecurityUpdates.ps1
+1. The main script - GetMSRCSecurityUpdates.ps1
 2. The product updater - UpdateProducts.ps1
 
 ## Pre-Requisites
@@ -14,7 +14,7 @@ While this script has only been tested on PowerShell 5.1, it should be able to w
 ## Usage Instructions
 For first time usage, run UpdateProducts.ps1 to begin. This will populate the list within products.txt to be used in the main script. To remove products, delete each line manually from products.txt.
 
-Once the products.txt has been setup, run MSRCSecurityUpdates.ps1 to get the list of security updates for each product in product.txt from the MSRC API. 
+Once the products.txt has been setup, run GetMSRCSecurityUpdates.ps1 to get the list of security updates for each product in product.txt from the MSRC API. 
 
 To specify the month, use the -DateString parameter with the month format in YYYY-MMM (e.g. 2026-May).
 
