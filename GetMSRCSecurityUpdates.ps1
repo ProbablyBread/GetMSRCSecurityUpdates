@@ -1,9 +1,9 @@
 param(
     [string]$DateString = (Get-Date -Format "yyyy-MMM"),
-    [string]$OutputFile = "" 
+    [string]$OutputFile = ""
 )
 
-$productsFile = "./products.txt"
+$productsFile = "$PSScriptRoot/products.txt"
 
 if ($DateString -notmatch "^\d{4}-[A-Za-z]{3}$") {
     Write-Host "Ensure that -DateString is in the format of YYYY-MMM (e.g. 2026-Mar)."
@@ -101,8 +101,17 @@ foreach ($product in $products) {
                 $remediation.Link = $r[0].FixedBuild
                 $remediation.RestartRequired = $r[0].RestartRequired.Value
             }
-            # if there are multiple versions separated by "and" or ","
+            # if there are multiple versions separated by "," and "and" 
             elseif ($r.FixedBuild -match ".*(,.*)?\sand\s.*") {
+                # sort by text string instead
+                $r = $r | Sort-Object { $_.FixedBuild } -ErrorAction Stop -Descending
+
+                $remediation.LatestVersion = $r[0].FixedBuild
+                $remediation.Link = $r[0].URL
+                $remediation.RestartRequired = $r[0].RestartRequired.Value
+            }
+            # if there are multiple version separated by "&"
+            elseif ($r.FixedBuild -match ".*\s\&\s.*") {
                 # sort by text string instead
                 $r = $r | Sort-Object { $_.FixedBuild } -ErrorAction Stop -Descending
 
@@ -140,11 +149,10 @@ Write-Host "== $($cvrf.DocumentTitle.Value) =="
 Write-Host ("=" * ($documentTitle.Length + 6))
 $remediations | Sort-Object -Property Product | Format-Table -AutoSize -Wrap 
 
-# output to file
 if ($OutputFile -ne "") {
     Write-Host "Exporting all security updates to $($OutputFile)..."
     try {
-        $($remediations | Sort-Object -Property Product | Select-Object Product, LatestVersion, Link, RestartRequired) | Export-Csv -Path "$OutputFile" -Delimiter "," -NoTypeInformation
+        $($remediations | Sort-Object -Property Product | Select-Object Product, LatestVersion, Link, RestartRequired) | Export-Csv -Path "$OutputFile" -Delimiter "," -NoTypeInformation 
         Write-Host "Security updates exported to $($OutputFile)."
     }
     catch {
